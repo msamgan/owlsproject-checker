@@ -11,10 +11,12 @@ exports.addInspection = (monitorId, status, latency, statusCode) => {
     })
 }
 
-exports.startDowntime = (monitorId) => {
+exports.startDowntime = (monitorId, statusCode, errorMessage) => {
     Downtime.create({
         monitor_id: monitorId,
-        started_at: new Date()
+        started_at: new Date(),
+        status_code: statusCode,
+        error_message: errorMessage
     }).then((r) => {
         //
     })
@@ -29,7 +31,7 @@ exports.endDowntime = (monitorId) => {
     }).then((downtime) => {
         if (downtime) {
             downtime.ended_at = new Date()
-            downtime.duration = Math.floor((downtime.ended_at - downtime.started_at) / 60000) // in minutes
+            downtime.duration = new Date(downtime.ended_at).getTime() - new Date(downtime.started_at).getTime()
             downtime.save()
         }
     })

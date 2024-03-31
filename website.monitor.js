@@ -20,13 +20,13 @@ exports.websiteMonitor = async (checkFor, interval) => {
         }
 
         for (let monitor of monitors) {
-            runCheck(monitor).then((status) => {
-                if (status === "down" && checkFor === "up") {
-                    startDowntime(monitor.id)
+            runCheck(monitor).then((monitorStatus) => {
+                if (monitorStatus.status === "down" && checkFor === "up") {
+                    startDowntime(monitor.id, monitorStatus.statusCode, monitorStatus.message)
                     sendNotification({ monitor_id: monitor.id, notification_type: "monitor_down" })
                 }
 
-                if (status === "up" && checkFor === "down") {
+                if (monitorStatus.status === "up" && checkFor === "down") {
                     endDowntime(monitor.id)
                     sendNotification({ monitor_id: monitor.id, notification_type: "monitor_up" })
                 }

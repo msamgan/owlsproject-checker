@@ -30,10 +30,7 @@ const checkHttpMonitor = async (monitor) => {
             code: parsedError.code,
             statusCode: parsedError.status
         }
-    } finally {
     }
-
-    return "down"
 }
 
 exports.runCheck = async (monitor) => {
@@ -50,5 +47,5 @@ exports.runCheck = async (monitor) => {
 
     addInspection(monitor.id, uptimeStatus.status, responseTime, uptimeStatus.statusCode)
 
-    return uptimeStatus.status
+    return uptimeStatus
 }

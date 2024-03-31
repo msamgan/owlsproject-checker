@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
             monitor_id: DataTypes.INTEGER,
             started_at: DataTypes.DATE,
             ended_at: DataTypes.DATE,
-            duration: DataTypes.INTEGER
+            duration: DataTypes.INTEGER,
+            status_code: DataTypes.INTEGER,
+            error_message: DataTypes.STRING
         },
         {
             sequelize,

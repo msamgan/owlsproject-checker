@@ -42,7 +42,7 @@ exports.getFormattedIntervals = async () => {
 exports.websiteMonitorCronSetter = async () => {
     let intervals = await this.getFormattedIntervals()
     intervals.forEach((interval) => {
-        console.log("Starting cron for:", interval.name)
+        // console.log("Starting cron for:", interval.name)
         cron.schedule(interval.cron, () => {
             websiteMonitor("up", interval.value).then(() => {
                 //
@@ -50,7 +50,7 @@ exports.websiteMonitorCronSetter = async () => {
         })
     })
 
-    console.log("Starting cron for down monitors every 30 seconds")
+    // console.log("Starting cron for down monitors every 30 seconds")
     cron.schedule("*/30 * * * * *", () => {
         websiteMonitor("down", null).then(() => {
             //
