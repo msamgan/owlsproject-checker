@@ -1,7 +1,8 @@
 const cron = require("node-cron")
 
 const { getIntervals } = require("./repositories/inspection.repository")
-const { websiteMonitor } = require("./website.monitor")
+const { monitor } = require("./monitor")
+const { MONITOR_TYPES } = require("./utils/constants")
 
 exports.getFormattedIntervals = async () => {
     let intervals = await getIntervals()
@@ -39,21 +40,18 @@ exports.getFormattedIntervals = async () => {
     return intervalCrone
 }
 
-exports.websiteMonitorCronSetter = async () => {
+exports.setCron = async () => {
     let intervals = await this.getFormattedIntervals()
     intervals.forEach((interval) => {
         // console.log("Starting cron for:", interval.name)
         cron.schedule(interval.cron, () => {
-            websiteMonitor("up", interval.value).then(() => {
-                //
-            })
+            monitor("up", interval.value, MONITOR_TYPES.WEBSITE_MONITOR).then(() => {})
+            monitor("up", interval.value, MONITOR_TYPES.PING_MONITOR).then(() => {})
         })
     })
 
-    // console.log("Starting cron for down monitors every 30 seconds")
-    cron.schedule("*/30 * * * * *", () => {
-        websiteMonitor("down", null).then(() => {
-            //
-        })
+    cron.schedule("*/10 * * * * *", () => {
+        monitor("down", null, MONITOR_TYPES.WEBSITE_MONITOR).then(() => {})
+        monitor("down", null, MONITOR_TYPES.PING_MONITOR).then(() => {})
     })
 }

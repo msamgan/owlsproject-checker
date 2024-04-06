@@ -1,7 +1,5 @@
 require("dotenv").config()
 
-const { websiteMonitorCronSetter } = require("./cron.setter")
+const { setCron } = require("./cron.setter")
 
-websiteMonitorCronSetter().then(() => {
-    //
-});
+setCron().then(() => {})

@@ -33,7 +33,7 @@ const checkHttpMonitor = async (monitor) => {
     }
 }
 
-exports.runCheck = async (monitor) => {
+exports.runWebsiteMonitorCheck = async (monitor) => {
     let startTime = null
     let endTime = null
 
