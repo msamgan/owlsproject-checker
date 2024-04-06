@@ -3,32 +3,42 @@ const { runWebsiteMonitorCheck } = require("./checkers/website.checker")
 const { startDowntime, endDowntime } = require("./repositories/inspection.repository")
 const { sendNotification } = require("./utils/methods")
 const { runPingMonitorCheck } = require("./checkers/ping.checker")
-const { MONITOR_TYPES } = require("./utils/constants")
+const { MONITOR_TYPES, STATUS, NOTIFICATION_TYPES } = require("./utils/constants")
 
 const websiteMonitor = (monitor, checkFor) => {
     runWebsiteMonitorCheck(monitor).then((monitorStatus) => {
-        if (monitorStatus.status === "down" && checkFor === "up") {
+        if (monitorStatus.status === STATUS.DOWN && checkFor === STATUS.UP) {
             startDowntime(monitor.id, monitorStatus.statusCode, monitorStatus.message)
-            sendNotification({ monitor_id: monitor.id, notification_type: "monitor_down" }).then(() => {})
+            sendNotification({
+                monitor_id: monitor.id,
+                notification_type: NOTIFICATION_TYPES.MONITOR_DOWN
+            }).then(() => {})
         }
 
-        if (monitorStatus.status === "up" && checkFor === "down") {
+        if (monitorStatus.status === STATUS.UP && checkFor === STATUS.DOWN) {
             endDowntime(monitor.id)
-            sendNotification({ monitor_id: monitor.id, notification_type: "monitor_up" }).then(() => {})
+            sendNotification({ monitor_id: monitor.id, notification_type: NOTIFICATION_TYPES.MONITOR_UP }).then(
+                () => {}
+            )
         }
     })
 }
 
 const pingMonitor = (monitor, checkFor) => {
     runPingMonitorCheck(monitor).then((monitorStatus) => {
-        if (monitorStatus.status === "down" && checkFor === "up") {
+        if (monitorStatus.status === STATUS.DOWN && checkFor === STATUS.UP) {
             startDowntime(monitor.id, monitorStatus.statusCode, monitorStatus.message)
-            sendNotification({ monitor_id: monitor.id, notification_type: "monitor_down" }).then(() => {})
+            sendNotification({
+                monitor_id: monitor.id,
+                notification_type: NOTIFICATION_TYPES.MONITOR_DOWN
+            }).then(() => {})
         }
 
-        if (monitorStatus.status === "up" && checkFor === "down") {
+        if (monitorStatus.status === STATUS.UP && checkFor === STATUS.DOWN) {
             endDowntime(monitor.id)
-            sendNotification({ monitor_id: monitor.id, notification_type: "monitor_up" }).then(() => {})
+            sendNotification({ monitor_id: monitor.id, notification_type: NOTIFICATION_TYPES.MONITOR_UP }).then(
+                () => {}
+            )
         }
     })
 }
